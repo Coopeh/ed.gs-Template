@@ -1,5 +1,9 @@
 <?php
 
+/*
+ * Minify HTML
+ */
+
 function minify_html($buffer)
 {
     $search = array(
@@ -17,6 +21,10 @@ function minify_html($buffer)
     return $buffer;
 }
 
+/*
+ * Enqueue Main Scripts/CSS
+ */
+
 function main_scripts()
 {
   $ver = date ("Ymd-Gis", filemtime(get_template_directory() . '/css/style.css'));
@@ -33,8 +41,26 @@ function main_scripts()
 add_action( 'wp_enqueue_scripts', 'main_scripts' );
 
 /*
-* Add/Remove Features and Functions
-*/
+ * Register Sidebar(s)
+ */
+
+function widgets_init() {
+  register_sidebar( array(
+    'name' => 'Sidebar',
+    'id' => 'sidebar',
+    'description' => 'Appears on posts and pages except the optional Front Page template, which has its own widgets',
+    'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+    'after_widget' => '</aside>',
+    'before_title' => '<h3 class="widget-title">',
+    'after_title' => '</h3>',
+  ) );
+}
+
+add_action( 'widgets_init', 'widgets_init' );
+
+/*
+ * Add/Remove Features and Functions
+ */
 
 remove_action('wp_head', 'wp_generator');
 
